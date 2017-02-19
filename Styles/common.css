@@ -11,13 +11,23 @@ body {
   top: 30%;
   font-size: 45px;
   font-weight: bold;
+  /*text-shadow: -3px -3px 2 rgba(161,161,161, 1),
+                3px -3px 2 rgba(161,161,161, 1),
+               -3px  3px 2 rgba(161,161,161, 1),
+                3px  3px 2 rgba(161,161,161, 1);*/
+
 }
+
 .home-occupation {
   z-index: 1;
   position: fixed;
   top: 40%;
   font-size: 50px;
   font-weight: bold;
+  /*text-shadow: -3px -3px 5 rgba(255,0,0,0.8),
+                3px -3px 5 rgba(255,0,0,0.8),
+               -3px  3px 5 rgba(255,0,0,0.8),
+                3px  3px 5 rgba(255,0,0,0.8);*/
 }
 
 /*For terminal effect on home page*/
