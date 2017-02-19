@@ -30,33 +30,45 @@ var CodeSample = function (Element) {
 CodeSample.prototype = {
   printLetter: function() {
 
-    // Get the string segment in the this.sample array; if it's undefined, we've
-    // reached the end of the array; begin again.
+    // Get the string segment in the this.sample array
     var element = this.sample[this.sampleIndex];
+
+    // If it's undefined, we've, reached the end of the array; begin again.
     if (element === undefined) {
       this.sampleIndex = 0;
       this.sampleElementIndex = 0;
       this.element.empty();
+      this.element.append(formatutils.shellCursor);
       return;
     }
 
-    // Get the next letter in the current string segment; if it's undefined,
-    // go the next string segment, and reset the string segment element index
+    // Get the next letter in the current string segment
     var letter = element[this.sampleElementIndex];
+
+    // If it's undefined, go the next string segment, and reset the string segment element index
     if (letter === undefined) {
       this.sampleIndex++;
       this.sampleElementIndex = 0;
+      $("#shell-cursor").remove();
       this.element.append(formatUtils.lineBreak);
 
-    // Otherwise, test for any formatting code, and append the code, or
-    // append the element
+    // Otherwise, test for any formatting code
     } else {
+      // If there's a formatting code, append the code
       if (this.reg.test(letter) && this.sampleElementIndex === 0) {
-        this.element.append(formatUtils.formats[parseInt(letter)]);
         this.sampleElementIndex++;
+        this.element.append(formatUtils.formats[parseInt(letter)]);
+        this.element.append(formatUtils.shellCursor);
+
+      // Otherwise, append the element
       } else {
         this.sampleElementIndex++;
-        this.element.append(letter);
+        if ($("#shell-cursor").length > 0) {
+          $("<span>" + letter + "</span>").insertBefore($("#shell-cursor"));
+        } else {
+          this.element.append(formatUtils.shellCursor);
+          $("<span>" + letter + "</span>").insertBefore($("#shell-cursor"));
+        }
       }
     }
 

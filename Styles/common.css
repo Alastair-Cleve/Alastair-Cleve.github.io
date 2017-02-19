@@ -31,6 +31,14 @@ body {
 }
 
 /*For terminal effect on home page*/
+#shell-cursor {
+  display: inline-block;
+  height: 15px;
+  width: 7px;
+  margin-bottom: -3px;
+  background: #45D40C;
+}
+
 .shell-wrap {
   height: 440px;
   width: 800px;
