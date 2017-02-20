@@ -5,7 +5,8 @@ body {
   /*font-family: 'Cutive Mono', monospace;*/
 }
 .center {
-  display: flex; justify-content: center;
+  display: flex;
+  justify-content: center;
 }
 /*End Global styles*/
 
@@ -142,3 +143,19 @@ ul li:last-child {
   border-radius: 3px;
 }
 /*End About Me*/
+
+/*For Article*/
+.article-container {
+  width: 40%;
+  border-bottom: 1px silver inset;
+  margin-top: 20px;
+  margin-left: 20px;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.article-title {
+  font-size: 24px;
+  font-weight: bold;
+}
+/*End For Articls*/

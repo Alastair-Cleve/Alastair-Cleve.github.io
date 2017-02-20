@@ -15,5 +15,12 @@ var utils = {
 
   navigate: function(url) {
     window.location = url;
+  },
+
+  openArticle: function(file) {
+    //var reader = new FileReader();
+    //reader.readAsText("file:///Users/AlastairCleve/Projects/PersonalWebsite/" + article);
+    //$("#article-content").append(reader.result);
   }
+
 };
