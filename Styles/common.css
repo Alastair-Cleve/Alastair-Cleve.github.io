@@ -135,7 +135,7 @@ ul li:last-child {
 /*End Terminal Effect*/
 
 /*About Me*/
-img {
+.images {
   width: 200px;
   height: 200px;
   margin-right: 50px;
