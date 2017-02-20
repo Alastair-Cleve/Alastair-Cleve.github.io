@@ -1,14 +1,13 @@
 var formatUtils = {
   lineBreak: "<br />",
-  lineIndent: "&nbsp;&nbsp;&nbsp;&nbsp;",
   formats: {
     0: "<br />",
-    1: ("<br />" + "&nbsp;&nbsp;&nbsp;&nbsp;"),
-    2: ("&nbsp;&nbsp;&nbsp;&nbsp;" + "&nbsp;&nbsp;&nbsp;&nbsp;"),
-    3: ("<br />" + "&nbsp;&nbsp;&nbsp;&nbsp;" + "&nbsp;&nbsp;&nbsp;&nbsp;"),
-    4: ("&nbsp;&nbsp;&nbsp;&nbsp;" + "&nbsp;&nbsp;&nbsp;&nbsp;" + "&nbsp;&nbsp;&nbsp;&nbsp;"),
-    5: ("&nbsp;&nbsp;&nbsp;&nbsp;" + "&nbsp;&nbsp;&nbsp;&nbsp;" + "&nbsp;&nbsp;&nbsp;&nbsp;" + "&nbsp;&nbsp;&nbsp;&nbsp;"),
-    6: ("&nbsp;&nbsp;&nbsp;&nbsp;" + "&nbsp;&nbsp;&nbsp;&nbsp;" + "&nbsp;&nbsp;&nbsp;&nbsp;" + "&nbsp;&nbsp;&nbsp;&nbsp;" + "&nbsp;&nbsp;&nbsp;&nbsp;"),
+    1: ("<br />" + utils.getTabs(1)),
+    2: utils.getTabs(2),
+    3: ("<br />" + utils.getTabs(2)),
+    4: utils.getTabs(3),
+    5: utils.getTabs(4),
+    6: utils.getTabs(5),
   },
   shellCursor: "<span id='shell-cursor'></span>"
 };
