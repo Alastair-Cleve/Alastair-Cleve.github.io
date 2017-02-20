@@ -7,6 +7,12 @@ var utils = {
     return tabs;
   },
 
+  isImageCached: function(imgUrl){
+    var imgTag = $("img");
+    imgTag.src = imgUrl;
+    return imgTag.complete || (imgTag.width + imgTag.height) > 0;
+  },
+
   navigate: function(url) {
     window.location = url;
   }
