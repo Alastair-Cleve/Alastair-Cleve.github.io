@@ -6,6 +6,7 @@
     <link href="https://fonts.googleapis.com/css?family=Arvo|Cutive+Mono" rel="stylesheet">
     <link href="Styles/common.css" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="Scripts/utils.js" charset="utf-8"></script>
     <script src="Scripts/formatutils.js" charset="utf-8"></script>
     <script src="Scripts/codesample.js" charset="utf-8"></script>
     <script src="Scripts/home.js" charset="utf-8"></script>
@@ -14,8 +15,8 @@
 
     <!-- NavBar -->
     <ul class="nav-bar-ul center">
-      <li class="nav-bar-li">Home</li>
-      <li class="nav-bar-li">Meet Me</li>
+      <li class="nav-bar-li" onclick="utils.navigate('index.html')">Home</li>
+      <li class="nav-bar-li" onclick="utils.navigate('meetme.html')">Meet Me</li>
       <li class="nav-bar-li">Read Me</li>
       <li class="nav-bar-li">Contact Me</li>
     </ul>
