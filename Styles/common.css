@@ -133,3 +133,12 @@ ul li:last-child {
   border-bottom-left-radius: 3px;
 }
 /*End Terminal Effect*/
+
+/*About Me*/
+img {
+  width: 200px;
+  height: 200px;
+  margin-right: 50px;
+  border-radius: 3px;
+}
+/*End About Me*/
