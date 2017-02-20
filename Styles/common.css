@@ -4,11 +4,17 @@ body {
   margin: 0px;
   /*font-family: 'Cutive Mono', monospace;*/
 }
+.center {
+  display: flex; justify-content: center;
+}
+/*End Global styles*/
 
 /*NavBar*/
 .nav-bar-ul {
   margin: 0px;
+  padding: 0px;
   border-bottom: 1px solid black;
+  list-style: none;
   background: #f7f7f7; /* Old browsers */
   background: -moz-linear-gradient(top,  #f7f7f7 0%, #B8B8B8 100%); /* FF3.6+ */
   background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#f7f7f7), color-stop(100%,#B8B8B8)); /* Chrome,Safari4+ */
@@ -21,7 +27,22 @@ body {
 
 .nav-bar-li {
   padding: 20px 30px 20px 30px;
+  width: 100px;
+  text-align: center;
   cursor: pointer;
+  float: left;
+}
+
+.nav-bar-li:hover {
+  color: white;
+  background: #B8B8B8; /* Old browsers */
+  background: -moz-linear-gradient(top, #B8B8B8 0%, #707070 100%); /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#B8B8B8), color-stop(100%,#707070)); /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(top, #B8B8B8 0%,#707070 100%); /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(top, #B8B8B8 0%,#707070 100%); /* Opera 11.10+ */
+  background: -ms-linear-gradient(top, #B8B8B8 0%,#707070 100%); /* IE10+ */
+  background: linear-gradient(to bottom, #B8B8B8 0%,#707070 100%); /* W3C */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#B8B8B8', endColorstr='#707070',GradientType=0 ); /* IE6-9 */
 }
 
 li {
@@ -31,32 +52,14 @@ li {
 ul li:last-child {
   border-right: 1px solid black;
 }
+/*End NavBar*/
 
 /*Home page styles*/
-.home-name {
-  z-index: 1;
-  position: fixed;
-  top: 30%;
-  font-size: 45px;
-  font-weight: bold;
-  /*text-shadow: -3px -3px 2 rgba(161,161,161, 1),
-                3px -3px 2 rgba(161,161,161, 1),
-               -3px  3px 2 rgba(161,161,161, 1),
-                3px  3px 2 rgba(161,161,161, 1);*/
-
-}
-
 .home-occupation {
-  z-index: 1;
-  position: fixed;
-  top: 40%;
-  font-size: 50px;
-  font-weight: bold;
-  /*text-shadow: -3px -3px 5 rgba(255,0,0,0.8),
-                3px -3px 5 rgba(255,0,0,0.8),
-               -3px  3px 5 rgba(255,0,0,0.8),
-                3px  3px 5 rgba(255,0,0,0.8);*/
+  font-size: 30px;
+  margin-top: 20px;
 }
+/*End Home page styles*/
 
 /*For terminal effect on home page*/
 #shell-cursor {
@@ -71,7 +74,7 @@ ul li:last-child {
   height: 440px;
   width: 800px;
 
-  margin: 50px auto 0 auto;
+  margin: 30px auto 0 auto;
   box-shadow: 0 0 30px rgba(0,0,0,0.4);
 
   -webkit-border-radius: 3px;
@@ -129,3 +132,4 @@ ul li:last-child {
   border-bottom-right-radius: 3px;
   border-bottom-left-radius: 3px;
 }
+/*End Terminal Effect*/
