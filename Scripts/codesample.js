@@ -38,7 +38,7 @@ CodeSample.prototype = {
       this.sampleIndex = 0;
       this.sampleElementIndex = 0;
       this.element.empty();
-      this.element.append(formatutils.shellCursor);
+      this.element.append(formatUtils.shellCursor);
       return;
     }
 
