@@ -137,8 +137,8 @@ ul li:last-child {
 
 /*About Me*/
 .images {
-  width: 200px;
-  height: 200px;
+  /*width: 200px;*/
+  /*height: 200px;*/
   margin-right: 50px;
   border-radius: 3px;
 }
