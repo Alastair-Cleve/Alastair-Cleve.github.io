@@ -21,15 +21,17 @@
 
     <!-- Occupation -->
     <div style="display: flex; justify-content: flex-start;">
-      <div class="article-container">
-        <div class="article-title">A Primer on LINQ Queries</div>
-        <div>
-          In this article, I look at Language Integrated Queries (LINQ) in C# and
-          how they are useful.
+      <div class="article-index">
+        <div class="article-container" onclick="utils.openArticle('linq.html')">
+          <div class="article-title">A Primer on LINQ Queries</div>
+          <div>
+            In this article, I look at Language Integrated Queries (LINQ) in C# and
+            how they are useful.
+          </div>
         </div>
       </div>
-      <div id="article-content">
-      </div>
+      <iframe id="current-article-content" src="">
+      </iframe>
     </div>
 
   </body>

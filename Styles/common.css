@@ -145,11 +145,19 @@ ul li:last-child {
 /*End About Me*/
 
 /*For Article*/
-.article-container {
-  width: 40%;
-  border-bottom: 1px silver inset;
+.article-index {
+  width: 20%;
   margin-top: 20px;
   margin-left: 20px;
+  height: 500px;
+  overflow-y: auto;
+}
+
+.article-container {
+  /*width: 20%;*/
+  border-bottom: 1px silver inset;
+  /*margin-top: 20px;*/
+  /*margin-left: 20px;*/
   padding: 10px;
   cursor: pointer;
 }
@@ -157,5 +165,14 @@ ul li:last-child {
 .article-title {
   font-size: 24px;
   font-weight: bold;
+}
+
+iframe {
+  margin-top: 20px;
+  margin-left: 20px;
+  padding: 10px;
+  border: 0px 0px 0px 1px silver inset;
+  width: 70%;
+  height: 500px;
 }
 /*End For Articls*/

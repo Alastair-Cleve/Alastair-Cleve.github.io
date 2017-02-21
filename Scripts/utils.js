@@ -18,9 +18,7 @@ var utils = {
   },
 
   openArticle: function(file) {
-    //var reader = new FileReader();
-    //reader.readAsText("file:///Users/AlastairCleve/Projects/PersonalWebsite/" + article);
-    //$("#article-content").append(reader.result);
+    $("#current-article-content").attr("src", "Articles/" + file);
   }
 
 };
