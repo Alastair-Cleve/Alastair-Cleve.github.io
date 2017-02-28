@@ -8,6 +8,12 @@
     <link href="Styles/common.css" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="Scripts/utils.js" charset="utf-8"></script>
+    <script type="text/javascript">
+      $(function() {
+        // This is just a placeholder until this page is further built out - just so there's an article on the page
+        $("#linq-article").trigger("click");
+      });
+    </script>
   </head>
   <body>
 
@@ -22,7 +28,7 @@
     <!-- Occupation -->
     <div style="display: flex; justify-content: flex-start;">
       <div class="article-index">
-        <div class="article-container" onclick="utils.openArticle('linq.html')">
+        <div id="linq-article" class="article-container" onclick="utils.openArticle('linq.html')">
           <div class="article-title">A Primer on LINQ Queries</div>
           <div>
             In this article, I look at Language Integrated Queries (LINQ) in C# and

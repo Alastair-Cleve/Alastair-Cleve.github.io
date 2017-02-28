@@ -5,154 +5,294 @@
     <title></title>
     <link href="https://fonts.googleapis.com/css?family=Arvo|Cutive+Mono" rel="stylesheet">
     <link href="../Styles/common.css" rel="stylesheet">
+    <link href="../Styles/articles.css" rel="stylesheet">
+    <link href="../Styles/prism.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.5.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.6.0/components/prism-csharp.min.js"></script>
   </head>
   <body>
     <div class="article-title">Language-Integrated Queries (LINQ) in C#</div>
 
     <p>
-    LINQ queries provide a consistent model for working with data across various kinds
-    of data sources and formats. Rather than having to learn a new domain-specific query
-    language for each data source (e.g., SQL for relational databases, XQuery for XML, &c.),
-    LINQ provides a single interface for querying across data sources.
+      LINQ queries provide a consistent model for working with data across various kinds
+      of data sources and formats. Rather than having to learn a new domain-specific query
+      language for each data source (e.g., SQL for relational databases, XQuery for XML, &c.),
+      LINQ provides a single interface for querying across data sources.
     </p>
 
-    LINQ queries are especially useful for working with C# collections, such as Dictionary<TKey, TValue> and List<T>. In a LINQ query, you obtain the data source, create the query, and execute the query:
+    <p>
+      LINQ queries are especially useful for working with C# collections, such as Dictionary&lt;TKey, TValue&gt;
+      and List&lt;T&gt;. In a LINQ query, you obtain the data source, create the query, and execute the query:
+    </p>
 
-         // 1. Obtain the data source.
-         int[] numbers = new int[7] { 0, 1, 2, 3, 4, 5, 6 };
+    <p>
+      <pre><code class="language-csharp">
+      // 1. Obtain the data source.
+      int[] numbers = new int[7] { 0, 1, 2, 3, 4, 5, 6 };
+      </code></pre>
+    </p>
 
-    // 2. Create the query.
-    IEnumerable<int> numQuery =            var numQuery =
-    from num in numbers                   from num in numbers
-               where (num % 2) == 0       OR         where (num % 2) == 0
-               select num;                           select num;
+    <p>
+      <pre><code class="language-csharp">
+      // 2. Create the query.
+      IEnumerable&lt;int&gt; numQuery =
+        from num in numbers
+        where (num % 2) == 0
+        select num;
+      </code></pre>
 
-    // 3. Execute the query.
-         foreach (int num in numQuery) {
-               …
-          }
+      Or (using the <code class="language-csharp">var</code> keyword):
 
-    Query Execution
+      <pre><code class="language-csharp">
+      var numQuery =
+        from num in numbers
+        where (num % 2) == 0
+        select num;
+      </code></pre>
+    </p>
+    <p>
+      <pre><code class="language-csharp">
+      // 3. Execute the query.
+      foreach (int num in numQuery) {
+            …
+      }
+      </code></pre>
+    </p>
 
-    Note that in LINQ, the query variable (numQuery above) itself takes no action and returns no data. A query is not executed until the foreach loop. Accordingly, LINQ queries can only be applied on data sources that support the IEnumerable<T> interface (e.g., generic collection classes, such as List<T>). Types that support IEnumerable<T> or the derived IQueryable<T> interface are called queryable types. Note also that non-generic collection classes, such as ArrayList, which support IEnumerable, can also be queried with LINQ.
+    <b>Query Execution</b>
 
-    A queryable type requires no modification or special treatment to serve as a LINQ data source. If the source data is not already in memory as a queryable type, the LINQ provider must represent it as such, for example:
+    <p>
+      Note that in LINQ, the query variable (numQuery above) itself takes no action and returns no data.
+      A query is not executed until the foreach loop. Accordingly, LINQ queries can only be applied on
+      data sources that support the IEnumerable&lt;T&gt; interface (e.g., generic collection classes,
+      such as List&lt;T&gt;). Types that support IEnumerable&lt;T&gt; or the derived IQueryable&lt;T&gt;
+      interface are called <i>queryable</i> types. Note also that non-generic collection classes, such as
+      ArrayList, which support IEnumerable, can also be queried with LINQ.
+    </p>
 
-         using System.Xml.Linq;
-    XElement contacts = XElement.Load(@"c:\myContactList.xml");
+    <p>
+      A queryable type requires no modification or special treatment to serve as a LINQ data source. If the
+      source data is not already in memory as a queryable type, the LINQ provider must represent it as such,
+      for example:
+    </p>
 
-    Execution Timing
+    <p>
+      <pre><code class="language-csharp">
+      using System.Xml.Linq;
+      XElement contacts = XElement.Load(@"c:\myContactList.xml");
+      </code></pre>
+    </p>
 
-    Deferred – the query is not immediately run, which means that the query stored in the query variable can be re-used as the data change:
-    ·        foreach loop
+    <b>Execution Timing</b>
 
-    Immediate – the query is immediately run. These methods rely on foreach; as a result, they force the query to be run.
-    ·        Count()
-    ·        Max()
-    ·        Average()
-    ·        First()
-    ·        ToList()
-    ·        ToArray()
+    <p>
+      <u>Deferred</u> – the query is not immediately run, which means that the query stored
+      in the query variable can be re-used as the data change:
+      <ul><li class="article-li">foreach loop</li></ul>
+    </p>
 
-    In Count, Max, Average, First, and other aggregation functions, a single value is returned, whereas in ToList and ToArray, the results of the query are cached in a local variable, e.g.:
+    <p>
+      <u>Immediate</u> – the query is immediately run. These methods rely on foreach; as a
+      result, they force the query to be run.
+      <ul>
+        <li class="article-li">Count()</li>
+        <li class="article-li">Max()</li>
+        <li class="article-li">Average()</li>
+        <li class="article-li">First()</li>
+        <li class="article-li">ToList()</li>
+        <li class="article-li">ToArray()</li>
+      </ul>
+    </p>
 
-    List<int> numQuery2 =
-    (from num in numbers
-    where (num % 2) == 0
-    select num).ToList();
+    <p>
+      In Count, Max, Average, First, and other aggregation functions, a single value is
+      returned, whereas in ToList and ToArray, the results of the query are cached in a
+      local variable, e.g.:
+    </p>
 
-    A Note on var
+    <p>
+      <pre><code class="language-csharp">
+      List&lt;int&gt; numQuery2 =
+        (from num in numbers
+         where (num % 2) == 0
+         select num).ToList();
+      </code></pre>
+    </p>
 
-    In the example on page 1, a query is written in two ways: IEnumerable<int> and var. IEnumerable<int> just means that the query, when it is executed, will produce a sequence of zero or more integer objects. However, this query may also be written with var, which instructs the compiler to infer the type of a query variable by looking at the data source specified in the from clause. The var keyword is useful when the type of the variable is obvious or when it is not that important to explicitly specify nested generic types such as those that are produced by group queries. In general, MSDN recommends that if you use var, you should realize that it can make your code more difficult for others to read.
+    <b>A Note on <code class="language-csharp">var</code></b>
 
-    Grouping
+    <p>
+      In the example above, a query is written in two ways: IEnumerable&lt;int&gt; and var. IEnumerable&lt;int&gt;
+      just means that the query, when it is executed, will produce a sequence of zero or more integer objects.
+      However, this query may also be written with var, which instructs the compiler to infer the type of a
+      query variable by looking at the data source specified in the from clause. The var keyword is useful
+      when the type of the variable is obvious or when it is not that important to explicitly specify nested
+      generic types such as those that are produced by group queries. In general, MSDN recommends that if
+      you use var, you should realize that it can make your code more difficult for others to read.
+    </p>
 
-    LINQ supports many SQL-like methods, such as joining (see page 4) and grouping, which produces a list of lists:
+    <b>Grouping</b>
 
+    <p>
+      LINQ supports many SQL-like methods, such as joining and grouping, which produces a list of lists:
+    </p>
 
+    <p>
+      <pre><code class="language-csharp">
+      var custQuery =
+        from cust in customers
+        group cust by cust.City into custGroup
+        where custGroup.Count() > 2
+        orderby custGroup.Key
+        select custGroup;
+      </code></pre>
+    </p>
 
-    var custQuery =
-    from cust in customers
-    group cust by cust.City into custGroup
-    where custGroup.Count() > 2
-    orderby custGroup.Key
-    select custGroup;
+    <p>
+      Note that custQuery is an IEnumerable&lt;IGrouping&lt;string, Customer&gt;&gt;, and since it is a list of
+      lists, it requires a nested loop:
+    </p>
 
-    Note that custQuery is an IEnumerable<IGrouping<string, Customer>>, and since it is a list of lists, it requires a nested loop:
+    <p>
+      <pre><code class="language-csharp">
+      foreach (var customerGroup in custQuery) {
+        Console.WriteLine(customerGroup.Key);
+        foreach (Customer customer in customerGroup) {
+          Console.WriteLine("    {0}", customer.Name);
+        }
+      }
+      </code></pre>
+    </p>
 
-    foreach (var customerGroup in custQuery) {
-    Console.WriteLine(customerGroup.Key);
-    foreach (Customer customer in customerGroup) {
-    Console.WriteLine("    {0}", customer.Name);
-    }
-    }
+    <b>Data Transformations</b>
 
-    Data Transformations
+    <p>
+      In addition to retrieving data, LINQ can be used to transform data. By using a LINQ query, you can
+      use a source sequence as input and modify it in many ways to create a new output sequence. You can
+      modify the sequence itself without modifying the elements themselves by sorting and grouping. But the
+      most powerful feature of LINQ queries is the ability to create new types.
+    </p>
 
-    In addition to retrieving data, LINQ can be used to transform data. By using a LINQ query, you can use a source sequence as input and modify it in many ways to create a new output sequence. You can modify the sequence itself without modifying the elements themselves by sorting and grouping. But the most powerful feature of LINQ queries is the ability to create new types.
+    <p>
+      For example, in this query, we get a list of teachers and students who live in Seattle, even though
+      teachers and students are separate classes.
+    </p>
 
-    For example, in this query, we get a list of teachers and students who live in Seattle, even though teachers and students are separate classes.
+    <p>
+      <pre><code class="language-csharp">
+      var peopleInSeattle =
+        (from student in students
+         where student.City == "Seattle"
+         select student.Last)
+            .Concat(from teacher in teachers
+                    where teacher.City == "Seattle"
+                    select teacher.Last);
+      </code></pre>
+    </p>
 
-    var peopleInSeattle = (from student in students
-    where student.City == "Seattle"
-                    select student.Last)
-                    .Concat(from teacher in teachers
-                          where teacher.City == "Seattle"
-                          select teacher.Last);
+    <p>
+      You can also select an output that is entirely different from the input:
+    </p>
 
-    You can also select an output that is entirely different from the input:
+    <p>
+      <pre><code class="language-csharp">
+      double[] radii = { 1, 2, 3 };
+      IEnumerable&lt;string&gt; query =
+        from rad in radii
+        select String.Format("Area = {0}", (rad * rad) * 3.14);
+      </code></pre>
+    </p>
 
-    double[] radii = { 1, 2, 3 };
+    <b>Selecting More Than 1 Property</b>
 
-    IEnumerable<string> query =
-               from rad in radii
-               select String.Format("Area = {0}", (rad * rad) * 3.14);
+    <p>
+      With LINQ, you can easily select 1 property:
+    </p>
 
-    Selecting More Than 1 Property
+    <p>
+      <pre><code class="language-csharp">
+      var query =
+        from cust in Customers
+        select cust.City;
+      </code></pre>
+    </p>
 
-    With LINQ, you can easily select 1 property:
+    <p>
+      You can also select the entire object:
+    </p>
 
-         var query = from cust in Customers
-                select cust.City;
+    <p>
+      <pre><code class="language-csharp">
+      var query =
+        from cust in Customers
+        select cust;
+      </code></pre>
+    </p>
 
-    You can also select the entire object:
+    <p>
+      Finally, you can select more than 1 property but less than the entire object:
+    </p>
 
-         var query = from cust in Customers
-                select cust;
+    <p>
+      <pre><code class="language-csharp">
+      var query =
+        from cust in Customer
+        select new { Name = cust.Name, City = cust.City };
+      </code></pre>
+    </p>
 
-    Finally, you can select more than 1 property but less than the entire object:
+    <p>
+      This can be very powerful, especially when combined with a join operation:
+    </p>
 
-         var query = from cust in Customer
-                select new {Name = cust.Name, City = cust.City};
+    <p>
+      <pre><code class="language-csharp">
+      var innerJoinQuery =
+        from cust in customers
+        join dist in distributors on cust.City equals dist.City
+        select new { CustomerName = cust.Name, DistributorName = dist.Name };
+      </code></pre>
+    </p>
 
-    This can be very powerful, especially when combined with a join operation:
+    <p>
+      Note that because the select statement produces an anonymous type, the query variable must be
+      implicitly typed by using <code class="language-csharp">var</code> and because the type of the
+      query variable is implicit, the iteration variable in the foreach loop must also be implicit.
+    </p>
 
-    var innerJoinQuery =
-    from cust in customers
-    join dist in distributors on cust.City equals dist.City
-    select new { CustomerName = cust.Name, DistributorName =
-    dist.Name };
+    <b>Query Syntax v. Method Syntax</b>
 
-    Note that because the select statement produces an anonymous type, the query variable must be implicitly typed by using var and because the type of the query variable is implicit, the iteration variable in the foreach loop must also be implicit.
+    <p>
+      Because declarative query syntax must be translated into method calls for the .NET common language
+      runtime (CLR), you have the option of using method syntax directly. For example:
+    </p>
 
-    Query Syntax v. Method Syntax
+    <p>
+      <pre><code class="language-csharp">
+      // Query Syntax
 
-    Because declarative query syntax must be translated into method calls for the .NET common language runtime (CLR), you have the option of using method syntax directly. For example:
+      IEnumerable&lt;int&gt; numQuery1 =
+        from num in numbers
+        where num % 2 == 0
+        orderby num
+        select num;
+      </code></pre>
+    </p>
 
-    Query Syntax:
+    <p>
+      <pre><code class="language-csharp">
+      // Method Syntax
 
-         IEnumerable<int> numQuery1 =
-                from num in numbers
-                where num % 2 == 0
-                orderby num
-                select num;
+      IEnumerable&lt;int&gt; numQuery2 =
+        numbers.Where(num => num % 2 == 0).OrderBy(num => num);
+      </code></pre>
+    </p>
 
-    Method Syntax:
-
-    IEnumerable<int> numQuery2 = numbers.Where(num => num % 2 ==
-    0).OrderBy(n => n);
-
-    Note that in C#, => is the lambda operator, which is read as “goes to”. The num on the left of the operator is the input variable which corresponds to num in the query expression, and the "return value" is just the expression result.
+    <p>
+      Note that in C#, <code class="language-csharp">=></code> is the lambda operator, which is read as
+      “goes to”. The num on the left of the operator is the input variable which corresponds to num in
+      the query expression, and the "return value" is just the expression result.
+    </p>
 
   </body>
 </html>

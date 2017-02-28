@@ -1,0 +1,8 @@
+/*Overwrite CSS in common.css without using !important*/
+body {
+  font-size: 16px;
+}
+
+.article-li, ul li.article-li:last-child {
+  border: none;
+}

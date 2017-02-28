@@ -146,7 +146,7 @@ ul li:last-child {
 
 /*For Article*/
 .article-index {
-  width: 20%;
+  width: 30%;
   margin-top: 20px;
   margin-left: 20px;
   height: 500px;
@@ -172,7 +172,7 @@ iframe {
   margin-left: 20px;
   padding: 10px;
   border: 0px 0px 0px 1px silver inset;
-  width: 70%;
+  width: 62%;
   height: 500px;
 }
 /*End For Articls*/
