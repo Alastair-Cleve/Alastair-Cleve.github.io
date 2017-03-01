@@ -21,8 +21,10 @@
     </p>
 
     <p>
-      LINQ queries are especially useful for working with C# collections, such as Dictionary&lt;TKey, TValue&gt;
-      and List&lt;T&gt;. In a LINQ query, you obtain the data source, create the query, and execute the query:
+      LINQ queries are especially useful for working with C# collections, such as
+      <code class="language-csharp">Dictionary&lt;TKey, TValue&gt;</code> and
+      <code class="language-csharp">List&lt;T&gt;</code>. In a LINQ query, you obtain the data source,
+      create the query, and execute the query:
     </p>
 
     <p>
@@ -64,10 +66,12 @@
     <p>
       Note that in LINQ, the query variable (numQuery above) itself takes no action and returns no data.
       A query is not executed until the foreach loop. Accordingly, LINQ queries can only be applied on
-      data sources that support the IEnumerable&lt;T&gt; interface (e.g., generic collection classes,
-      such as List&lt;T&gt;). Types that support IEnumerable&lt;T&gt; or the derived IQueryable&lt;T&gt;
-      interface are called <i>queryable</i> types. Note also that non-generic collection classes, such as
-      ArrayList, which support IEnumerable, can also be queried with LINQ.
+      data sources that support the <code class="language-csharp">IEnumerable&lt;T&gt;</code> interface
+      (e.g., generic collection classes, such as <code class="language-csharp">List&lt;T&gt;</code>).
+      Types that support <code class="language-csharp">IEnumerable&lt;T&gt;</code> or the derived
+      <code class="language-csharp">IQueryable&lt;T&gt;</code> interface are called <i>queryable</i> types.
+      Note also that non-generic collection classes, such as <code class="language-csharp">ArrayList</code>,
+      which support <code class="language-csharp">IEnumerable</code>, can also be queried with LINQ.
     </p>
 
     <p>
@@ -122,13 +126,15 @@
     <b>A Note on <code class="language-csharp">var</code></b>
 
     <p>
-      In the example above, a query is written in two ways: IEnumerable&lt;int&gt; and var. IEnumerable&lt;int&gt;
+      In the example above, a query is written in two ways: <code class="language-csharp">IEnumerable&lt;int&gt;</code>
+      and <code class="language-csharp">var</code>. <code class="language-csharp">IEnumerable&lt;int&gt;</code>
       just means that the query, when it is executed, will produce a sequence of zero or more integer objects.
-      However, this query may also be written with var, which instructs the compiler to infer the type of a
-      query variable by looking at the data source specified in the from clause. The var keyword is useful
-      when the type of the variable is obvious or when it is not that important to explicitly specify nested
-      generic types such as those that are produced by group queries. In general, MSDN recommends that if
-      you use var, you should realize that it can make your code more difficult for others to read.
+      However, this query may also be written with <code class="language-csharp">var</code>, which instructs
+      the compiler to infer the type of a query variable by looking at the data source specified in the from clause.
+      The <code class="language-csharp">var</code> keyword is useful when the type of the variable is obvious or
+      when it is not that important to explicitly specify nested generic types such as those that are produced
+      by group queries. In general, MSDN recommends that if you use <code class="language-csharp">var</code>,
+      you should realize that it can make your code more difficult for others to read.
     </p>
 
     <b>Grouping</b>
@@ -149,8 +155,8 @@
     </p>
 
     <p>
-      Note that custQuery is an IEnumerable&lt;IGrouping&lt;string, Customer&gt;&gt;, and since it is a list of
-      lists, it requires a nested loop:
+      Note that custQuery is an <code class="language-csharp">IEnumerable&lt;IGrouping&lt;string, Customer&gt;&gt;</code>,
+      and since it is a list of lists, it requires a nested loop:
     </p>
 
     <p>

@@ -19,6 +19,12 @@ var utils = {
 
   openArticle: function(file) {
     $("#current-article-content").attr("src", "Articles/" + file);
+  },
+
+  scrollToBottom: function () {
+    $("body, html").animate({
+      scrollTop: $(document).height()
+    }, 400);
   }
 
 };

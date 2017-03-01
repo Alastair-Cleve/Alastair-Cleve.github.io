@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <link href="https://fonts.googleapis.com/css?family=Arvo|Cutive+Mono" rel="stylesheet">
+    <link href="../Styles/common.css" rel="stylesheet">
+    <link href="../Styles/articles.css" rel="stylesheet">
+    <link href="../Styles/prism.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.5.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.6.0/components/prism-csharp.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="../Scripts/utils.js" charset="utf-8"></script>
+  </head>
+  <body>
+    <div class="article-title">Shallow & Deep Duplication in C#</div>
+
+    <p>
+      C# provides a <code class="language-csharp">MemberwiseClone()</code> method, which creates a shallow copy
+      of a given object by creating a new object, and then copying the nonstatic fields of the current object
+      to the new object. If a field is a value type (i.e., it stores its own data)<a href="#" onclick="utils.scrollToBottom()">[1]</a>,
+      then a bit-by-bit copy of the field is performed. However, if a field is a reference type (i.e., it holds
+      a pointer to data elsewhere)<a href="#" onclick="utils.scrollToBottom()">[2]</a>, the reference is copied
+      but the referred object is not; therefore, the original object and its clone refer to the same
+      object.<a href="#" onclick="utils.scrollToBottom()">[3]</a> Consider the following example:
+    </p>
+
+    <p>
+      <pre><code class="language-csharp">
+      public class Person {
+        public int Age;
+        public string Name;
+        public IdInfo IdInfo;
+
+        public Person ShallowCopy() {
+          return (Person)this.MemberwiseClone();
+        }
+      }
+      </code></pre>
+    </p>
+
+    <p>
+      Here, Age is copied, whereas only the references to Name and IdInfo are copied. In order to copy all
+      referred objects and not just references, a custom method must be created. Consider the following:
+    </p>
+
+    <p>
+      <pre><code class="language-csharp">
+      public static T DeepClone&lt;T&gt;(T obj) {
+        using (MemoryStream memoryStream = new MemoryStream()) {
+
+          BinaryFormatter formatter = new BinaryFormatter();
+          formatter.Serialize(memoryStream, obj);
+          memoryStream.Position = 0;
+
+          return (T)formatter.Deserialize(memoryStream);
+        }
+      }
+      </code></pre>
+    </p>
+
+    <p>
+      This method creates a <u>deep</u> copy of an object by serializing an object into binary on a memory
+      stream and then de-serializing the stream into an object graph, which is then casted into the
+      specified object type. The <code class="language-csharp">using</code> statement is required
+      because <code class="language-csharp">MemoryStream</code> implements
+      <code class="language-csharp">IDisposable</code>, which requires that it be disposed after use.
+      The <code class="language-csharp">using</code> statement is syntactic sugar for calling
+      <code class="language-csharp">Dispose()</code> in a <code class="language-csharp">try...catch</code>
+      block.
+
+      Thus, calling
+    </p>
+
+    <p>
+      <pre><code class="language-csharp">
+      Person person1 = new Person();
+      Person person2 = DeepClone&lt;Person&gt;(person1);
+      </code></pre>
+    </p>
+
+    <p>
+      creates two identical, but separate in memory, Person objects.
+    </p>
+
+    <p>
+      Note that the price that is paid for this method is slow speed, since the entire object is converted
+      into binary and then re-converted back. However, it does ensure a full, separate copy. If speed is a
+      concern, consider creating a method on the class in question which provides deep duplication.
+      For example, the Person class above could implement:
+    </p>
+
+    <p>
+      <pre><code class="language-csharp">
+      public Person DeepCopy() {
+        Person other = (Person)this.MemberwiseClone();
+        other.IdInfo = new IdInfo(IdInfo.IdNumber);
+        other.Name = String.Copy(Name);
+        return other;
+      }
+      </code></pre>
+    </p>
+
+    <p>
+      Notice that this uses the <code class="language-csharp">MemberwiseClone()</code> method and then creates
+      copies of IdInfo and Name, since those are reference types. The benefit of this approach is that
+      it is faster; however, the penalty is that you must catch for reference types.
+    </p>
+
+    <p class="footnotes">
+      <p>
+        [1] Value types include: all numeric data types, Boolean, Char, Date, all Structs (even if their
+        members are reference types), and Enumerations (since their underlying type is always SByte,
+        Short, Integer, Long, Byte, UShort, UInteger, or ULong)
+      <p>
+
+      <p>
+        [2] Reference types include: String, Array (even if its elements are value types), Class types,
+        and Delegates
+      </p>
+
+      <p>
+        [3] To test whether an object is a Value type or Reference Type, consider using: is ValueType. Ex:
+        <p>
+          <pre><code class="language-csharp">
+          int i = 3;
+          if (i is ValueType) {
+               // Do stuff
+          }
+          </code></pre>
+        </p>
+      </p>
+    </p>
+
+  </body>
+</html>
