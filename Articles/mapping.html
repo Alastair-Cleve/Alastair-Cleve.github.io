@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <link href="https://fonts.googleapis.com/css?family=Arvo|Cutive+Mono" rel="stylesheet">
+    <link href="../Styles/common.css" rel="stylesheet">
+    <link href="../Styles/articles.css" rel="stylesheet">
+    <link href="../Styles/prism.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.5.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.6.0/components/prism-csharp.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.6.0/components/prism-javascript.min.js" charset="utf-8"></script>
+  </head>
+  <body>
+    <div class="article-title">Mapping in JavaScript & C#</div>
+
+    <p>
+      JavaScript provides Array.prototype.map(), i.e. a method on the Array class that
+      returns a new modified array:
+    </p>
+
+    <p>
+      <pre><code class="language-javascript">
+      var array = [1, 2, 3];
+      array = array.map(function(element) {
+        return element * 2;
+      });
+
+      console.log(array);
+      // [2, 4, 6]
+      </code></pre>
+    </p>
+
+    <p>
+      Achieving the same functionality in C# depends on the data structure. If you are
+      using <code class="language-csharp">System.Array</code>, you can use a LINQ extension
+      method with lambda syntax, whereas if you are using <code class="language-csharp">
+      System.Collections.Generic.List&lt;T&gt;</code>, you can call <code class="language-csharp">
+      ConvertAll&lt;T&gt;</code>.
+    </p>
+
+    <p>
+      <u>Array</u>
+    </p>
+
+    <p>
+      <pre><code class="language-csharp">
+      using System;
+      using System.Linq;
+
+      int[] array = new int[] { 1, 2, 3 };
+      array = array.Select(element => element * 2).ToArray();
+
+      foreach (int el in array) {
+        Console.WriteLine(el);
+      }
+      // 2, 4, 6
+      </code></pre>
+    </p>
+
+    <p>
+      <u>List&lt;T&gt;</u>
+    </p>
+
+    <p>
+      <pre><code class="language-csharp">
+      using System;
+      using System.Collections.Generic;
+
+      List&lt;int&gt; array = new List&lt;int&gt; { 1, 2, 3 };
+      array = array.ConvertAll&lt;int&gt;(element => element * 2);
+
+      foreach (int el in array) {
+        Console.WriteLine(el);
+      }
+      // 2, 4, 6
+      </code></pre>
+    </p>
+
+  </body>
+</html>
