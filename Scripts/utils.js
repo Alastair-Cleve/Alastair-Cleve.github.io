@@ -25,6 +25,14 @@ var utils = {
     $("body, html").animate({
       scrollTop: $(document).height()
     }, 400);
+  },
+
+  sendEmail: function () {
+    var address = 'me@alastaircleve.com';
+    var subject = 'Saying Hi';
+    var emailBody = 'Hello Alastair,';
+    document.location = "mailto:" + address + "?subject=" + subject + "&body="
+      + emailBody;
   }
 
 };
