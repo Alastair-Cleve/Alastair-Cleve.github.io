@@ -149,7 +149,7 @@ ul li:last-child {
   width: 30%;
   margin-top: 20px;
   margin-left: 20px;
-  height: 500px;
+  height: 90%;
   overflow-y: auto;
 }
 
@@ -169,10 +169,13 @@ ul li:last-child {
 
 iframe {
   margin-top: 20px;
-  margin-left: 20px;
-  padding: 10px;
-  border: 0px 0px 0px 1px silver inset;
-  width: 62%;
-  height: 500px;
+  margin-left: 19px;
+  padding: 10px 10px 10px 20px;
+  border-left: 1px silver inset;
+  border-right: none;
+  border-bottom: none;
+  border-top: none;
+  width: 63%;
+  height: 90%;
 }
 /*End For Articls*/
