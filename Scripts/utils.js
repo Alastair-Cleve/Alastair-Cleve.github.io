@@ -17,8 +17,10 @@ var utils = {
     window.location = url;
   },
 
-  openArticle: function(file) {
+  openArticle: function(file, element) {
     $("#current-article-content").attr("src", "Articles/" + file);
+    $(".article-container").removeClass("article-selected");
+    $(element).addClass("article-selected");
   },
 
   scrollToBottom: function () {

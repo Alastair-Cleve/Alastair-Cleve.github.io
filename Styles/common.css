@@ -167,6 +167,11 @@ ul li:last-child {
   font-weight: bold;
 }
 
+.article-selected {
+  background-color: #eaeaea;
+  border-radius: 3px;
+}
+
 iframe {
   margin-top: 20px;
   margin-left: 19px;
