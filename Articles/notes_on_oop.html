@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <link href="https://fonts.googleapis.com/css?family=Arvo|Cutive+Mono" rel="stylesheet">
+    <link href="../Styles/common.css" rel="stylesheet">
+    <link href="../Styles/articles.css" rel="stylesheet">
+    <link href="../Styles/prism.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.5.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.6.0/components/prism-csharp.min.js"></script>
+  </head>
+  <body>
+    <div class="article-title">Notes on Object Oriented Programming (OOP) in C#</div>
+
+    <p>
+      Generally, Object-Oriented Programming (OOP) rests on three pillars:
+      <ul>
+        <li class="article-li">Encapsulation</li>
+        <li class="article-li">Inheritance</li>
+        <li class="article-li">Polymorphism</li>
+      </ul>
+      Here, we will focus on inheritance and polymorphism--areas where there can be some confusion
+      in C#.
+    </p>
+
+    <p>
+      <br />
+      <b>Inheritance</b>
+    </p>
+
+    <p>
+      <ul>
+        <li class="article-li">
+          C# does not allow multiple inheritance; however, the inheritance chain is
+          unlimited
+        </li>
+        <li class="article-li">
+          You can instantiate a derived type and set it to a base type, e.g.:
+          <pre><code class="language-csharp">
+          Fruit banana = new Banana();
+          </code></pre>
+        </li>
+        <li class="article-li">
+          The <code class="language-csharp">base</code> keyword allows access to
+          inherited methods, e.g.:
+          <pre><code class="language-csharp">
+          public override GradeStatistics ComputeStatistics() {
+               return base.ComputeStatistics();
+          }
+          </code></pre>
+        </li>
+        <li class="article-li">
+          Use the <code class="language-csharp">protected</code> access modifier to
+          provide access to derived classes
+        </li>
+        <li class="article-li">
+          A disadvantage of inheritance is that it can create rigidity in the codebase
+          that may be difficult to untangle
+        </li>
+      </ul>
+    </p>
+
+    <p>
+      <br />
+      <b>Polymorphism</b>
+    </p>
+
+    <p>
+      <ul>
+        <li class="article-li">
+          Polymorphism is the ability of one variable to point to different types of objects
+          and objects to behave differently depending on their type
+        </li>
+        <li class="article-li">
+          The <code class="language-csharp">virtual</code> keyword informs the C# compiler to
+          use the method that conforms to the type of object that it is working against,
+          whereas the absence of this keyword informs the compiler to use the method that
+          conforms to the type of the variable. This is what gives us polymorphism, since it
+          allows a variable to act differently depending on the object:
+          <pre><code class="language-csharp">
+          public class A : Object {
+            public virtual void DoWork() {
+             // …
+            }
+          }
+
+          public class B : A {
+            public override void DoWork() {
+             //…
+            }
+          }
+          </code></pre>
+        </li>
+        <li class="article-li">
+          The <code class="language-csharp">override</code> keyword gives an alternative
+          definition for its <code class="language-csharp">virtual</code> parent
+        </li>
+      </ul>
+    </p>
+
+    <p>
+      <br />
+      <b>Reducing Rigidity in Inheritance</b>
+    </p>
+
+    <p>
+      <i>Abstract Classes</i>
+      <ul>
+        <li class="article-li">
+          An abstract class is a class that you cannot instantiate because it is not fully
+          implemented
+        </li>
+        <li class="article-li">
+          This is useful because it allows you to define a type to achieve polymorphism
+        </li>
+        <li class="article-li">
+          When you inherit from an abstract class, you must provide an implementation, e.g.:
+          <pre><code class="language-csharp">
+          public abstract class Window {
+
+            public virtual string Title { get; set; }
+
+            public virtual void Draw() {
+              //… drawing code
+            }
+
+            public abstract void Open();
+          }
+          </code></pre>
+          *Here, you must provide an implementation for <code class="language-csharp">Open()</code>
+          when you inherit from <code class="language-csharp">Window</code>; meanwhile, you can
+          also override <code class="language-csharp">Title</code> and
+          <code class="language-csharp">Draw()</code>
+        </li>
+      </ul>
+
+      <i>Interfaces</i>
+      <ul>
+        <li class="article-li">
+          Interfaces contain <u>no</u> implementation details; they define only the
+          signatures of methods, events, and properties
+          <ul>
+            <li class="article-li">
+              Essentially, you are defining an API for an object, i.e. it is the ultimate abstraction
+            </li>
+          </ul>
+        </li>
+        <li class="article-li">
+          A type can implement <u>multiple</u> interfaces, which is the most notable difference
+          between abstract classes and interfaces and why many C# developers prefer them
+          <pre><code class="language-csharp">
+          public interface IWindow {
+            string Title { get; set; }
+            void Draw();
+            void Open();
+          }
+          </code></pre>
+          *Note that you cannot use access modifiers in interfaces
+        </li>
+        <li class="article-li">
+          <i>Important interfaces include:</i>
+          <br /><br />
+          <table>
+            <thead>
+              <tr>
+                <th style="width: 50%;">Name</th>
+                <th style="width: 50%;">Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <code class="language-csharp">IDisposable</code> (<i>forces an object to
+                  have a <code class="language-csharp">Dispose()</code> method; recall that
+                  this can be implemented via a <code class="language-csharp">using</code>
+                  statement</i>)
+                </td>
+                <td>Releases resources (files, connections)</td>
+              </tr>
+              <tr>
+                <td><code class="language-csharp">IEnumerable</code></td>
+                <td>Supports iteration (<code class="language-csharp">foreach</code>)</td>
+              </tr>
+              <tr>
+                <td><code class="language-csharp">INotifyPropertyChange</code></td>
+                <td>Raises events when properties change</td>
+              </tr>
+              <tr>
+                <td><code class="language-csharp">IComparable</code></td>
+                <td>Compares for sorting</td>
+              </tr>
+            </tbody>
+          </table>
+        </li>
+      </ul>
+    </p>
+
+  </body>
+</html>

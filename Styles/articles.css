@@ -5,9 +5,31 @@ body {
 
 .article-li, ul li.article-li:last-child {
   border: none;
+  padding-top: 3px;
 }
 
 .footnotes {
   margin-top: 100px;
   border-top: 1px solid black;
+}
+
+table {
+  border-collapse: collapse;
+}
+
+tr {
+  border-bottom: 1px solid black;
+}
+
+thead tr {
+  background-color: #eaeaea;
+}
+
+thead th {
+  line-height: 25px;
+  padding: 5px;
+}
+
+td {
+  padding: 5px;
 }
