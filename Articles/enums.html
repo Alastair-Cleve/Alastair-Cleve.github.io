@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <link href="https://fonts.googleapis.com/css?family=Arvo|Cutive+Mono" rel="stylesheet">
+    <link href="../Styles/common.css" rel="stylesheet">
+    <link href="../Styles/articles.css" rel="stylesheet">
+    <link href="../Styles/prism.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.5.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.6.0/components/prism-csharp.min.js"></script>
+  </head>
+  <body>
+    <div class="article-title">Using Enums as Bit Flags</div>
+
+    <p>
+      C#, like other programming languages such as C++ and Java, exposes an enumeration
+      type--often referred to as an <code class="language-csharp">enum</code>. An
+      <code class="language-csharp">enum</code> is a distinct type that consists
+      of constants which map to an underlying type. This enables developers to give
+      meaningful names to different codes. For example, suppose we are dealing with
+      a deck of cards. We might have an <code class="language-csharp">enum</code> for Suits:
+    </p>
+
+    <p>
+      <pre><code class="language-csharp">
+      public enum Suits {
+        Spades,
+        Clubs,
+        Diamonds,
+        Hearts
+      }
+      </code></pre>
+    </p>
+
+    <p>
+      Now imagine that we have a card class, and one of the properties of that class
+      is a <code class="language-csharp">Suit</code> property. We declare that
+      property as a <code class="language-csharp">Suits</code> type so that we
+      can set it to a value in the <code class="language-csharp">Suits</code>
+      <code class="language-csharp">enum</code>:
+    </p>
+
+    <p>
+      <pre><code class="language-csharp">
+      card.Suit = Suits.Spades;
+      </code></pre>
+    </p>
+
+    <p>
+      In the database, this value will be stored as <b>0</b>, since an enum in C# maps
+      to an <code class="language-csharp">int</code> by default and since that mapping
+      begins at <b>0</b> by default. If we had wanted to start the enumeration at
+      a different integer, we could have:
+    </p>
+
+    <p>
+      <pre><code class="language-csharp">
+      public enum Suits {
+        Spades = 6,
+        Clubs = 7,
+        Diamonds = 12,
+        Hearts = 34
+      }
+      </code></pre>
+    </p>
+
+    <p>
+      <u>Primary Benefits</u>
+    </p>
+
+    <p>
+      We can map the enumerator list to whatever integers make the most sense for our
+      application. Further, we can map to a different data type, such as
+      <code class="language-csharp">byte</code> or <code class="language-csharp">long</code>,
+      provided that they are supported types. However, for most cases,
+      <code class="language-csharp">int</code> is most useful.
+      Using <code class="language-csharp">enum</code>s is extremely helpful because
+    </p>
+
+    <p>
+      <pre><code class="language-csharp">
+      card.Suit = Suits.Spades;
+      </code></pre>
+    </p>
+
+    <p>
+      is far more readable than
+    </p>
+
+    <p>
+      <pre><code class="language-csharp">
+      card.Suit = 6;
+      </code></pre>
+    </p>
+
+    <p>
+      Further, we get support from IntelliSense, which provides the possible
+      <code class="language-csharp">enum</code> values as we are writing, and
+      we get some additional type safety, since we cannot set a property to a
+      value that does not exist in the enumerator list, i.e.
+    </p>
+
+    <p>
+      <pre><code class="language-csharp">
+      card.Suit = 99;
+      </code></pre>
+    </p>
+
+    <p>
+      will produce an error. Finally, it enables storage of a code in the database as
+      opposed to some unwieldy string. When a row is read from the database, the
+      <code class="language-csharp">int</code> (or <code class="language-csharp">byte</code>
+      or <code class="language-csharp">long</code>, etc., as the case may be) is cast
+      to the enum and then set to the appropriate property. The developer does not
+      need to think about any underlying codes.
+    </p>
+
+    <p>
+      <u>Bit Flags</u>
+    </p>
+
+    <p>
+      If you have worked with <code class="language-csharp">enum</code>s before,
+      you may have noticed that something I just said is only partially true:
+      additional type safety. While it is true that you cannot assign an integer to a
+      property typed as an <code class="language-csharp">enum</code>
+      that is not in the enumerated list, you can cast any integer to the
+      <code class="language-csharp">enum</code> and then assign it. For example,
+      this will produce an error:
+    </p>
+
+    <p>
+      <pre><code class="language-csharp">
+      card.Suit = 99;
+      </code></pre>
+    </p>
+
+    <p>
+      This will not produce an error:
+    </p>
+
+    <p>
+      <pre><code class="language-csharp">
+      card.Suit = (Suits)99;
+      </code></pre>
+    </p>
+
+    <p>
+      If you interrogate the result of the second assignment, you will discover
+      that the <code class="language-csharp">Suit</code> property on the card
+      object is now set to 99, and there are neither compile errors nor
+      runtime errors. But, why should <code class="language-csharp">enum</code>s allow this?
+    </p>
+
+    <p>
+      The answer lies in a powerful feature of <code class="language-csharp">enum</code>s
+      known as bit flags. By performing bitwise operations on the <code class="language-csharp">enum</code>,
+      you can set a property to the result of that operation and then interrogate that
+      property to determine whether it includes one of the constants in the
+      <code class="language-csharp">enum</code>. Let’s explore this more by looking
+      at the <code class="language-csharp">[Flags]</code> decorator.
+    </p>
+
+    <p>
+      Enums can be marked with the <code class="language-csharp">[Flags]</code>
+      decorator, which does one thing: it alters that <code class="language-csharp">ToString()</code>
+      method so that it returns a string that is the concatenation of
+      <code class="language-csharp">enum</code> values. It does not enable bitwise
+      operations—any <code class="language-csharp">enum</code> in C# supports such operations.
+      However, since it overrides the <code class="language-csharp">ToString()</code>
+      method, it is often used in conjunction with <code class="language-csharp">enum</code>s as
+      bit flags. For example, suppose we have another Suits <code class="language-csharp">enum</code>,
+      although this one is called <code class="language-csharp">SuitsFlags</code>:
+    </p>
+
+    <p>
+      <pre><code class="language-csharp">
+      [Flags]
+      public enum SuitsFlags {
+        Spades = 1,
+        Clubs = 2,
+        Diamonds = 4,
+        Hearts = 8
+      }
+      </code></pre>
+    </p>
+
+    <p>
+      Imagine that we have special cards in our deck that have a <code class="language-csharp">Suits</code>
+      property, which allows them to have more than one suit. When setting that
+      property, we use a bitwise <b>OR</b> operator. For example:
+    </p>
+
+    <p>
+      <pre><code class="language-csharp">
+      card.Suits = SuitsFlags.Spades | SuitsFlags.Clubs;
+      </code></pre>
+    </p>
+
+    <p>
+      The Suits property on this object has now been set to two values,
+      <code class="language-csharp">Spades</code> and <code class="language-csharp">Clubs</code>.
+      The <code class="language-csharp">[Flags]</code> attribute means that when we
+      make a call to <code class="language-csharp">ToString()</code>, a string of
+      the concatenated names is returned: “Spades, Clubs.”
+    </p>
+
+    <p>
+      While this <code class="language-csharp">ToString()</code> functionality is
+      nice, what is really powerful about using <code class="language-csharp">enum</code>s
+      as flags is that we can later test for one of these values and perform any
+      appropriate logic, e.g.:
+    </p>
+
+    <p>
+      <pre><code class="language-csharp">
+      if (card.Suits.HasFlag(SuitsFlags.Spades)) {
+        // Do something
+      }
+      </code></pre>
+    </p>
+
+    <p>
+      Now you may be asking: why does this work? The answer lies in the values of
+      the <code class="language-csharp">SuitsFlag</code> enumeration list.
+      In binary, these values are:
+    </p>
+
+    <p>
+      <table class="binary">
+        <tr>
+          <td>Spades</td>
+          <td><b>0001</b></td>
+        </tr>
+        <tr>
+          <td>Clubs</td>
+          <td><b>0010</b></td>
+        </tr>
+        <tr>
+          <td>Diamonds</td>
+          <td><b>0100</b></td>
+        </tr>
+        <tr>
+          <td>Hearts</td>
+          <td><b>1000</b></td>
+        </tr>
+      </table>
+    </p>
+
+    <p>
+      When you perform a bitwise <b>OR</b> operation on these values, it is sort
+      of like adding them together:
+    </p>
+
+    <p>
+      <table class="binary">
+        <tr>
+          <td>Spades</td>
+          <td><b>0001</b></td>
+        </tr>
+        <tr>
+          <td>Clubs</td>
+          <td><b><u>0010</u></b></td>
+        <tr>
+          <td></td>
+          <td><b>0011</b></td>
+        </tr>
+      </table>
+    </p>
+
+    <p>
+      You will notice that the resulting value of this operation—<b>0011</b> or <b>3</b>—does not
+      exist in the <code class="language-csharp">enum</code>, yet we were still able
+      to set <code class="language-csharp">card.Suits</code> to it. This is desirable,
+      since it allows us to test for the inclusion of a particular flag, as we did
+      above with the call to <code class="language-csharp">HasFlag()</code>. In essence,
+      all <code class="language-csharp">HasFlag()</code> is doing is performing a bitwise
+      <b>AND</b> operation, i.e.
+    </p>
+
+    <p>
+      <pre><code class="language-csharp">
+      if (card.Suits.HasFlag(SuitsFlags.Spades) { … }
+      </code></pre>
+    </p>
+
+    <p>
+      is equivalent to:
+    </p>
+
+    <p>
+      <pre><code class="language-csharp">
+      if ((card.Suits & Suits.Spades) == Suits.Spades) { … }
+      </code></pre>
+    </p>
+
+    <p>
+      This works because the <b>AND</b> operator will produce the result of the
+      sought <code class="language-csharp">enum</code> property.
+    </p>
+
+    <p>
+      <table class="binary">
+        <tr>
+          <td>card.Suits</td>
+          <td><b>0011</b></td>
+        </tr>
+        <tr>
+          <td>SuitsFlags.Spades</td>
+          <td><b><u>0001</u></b></td>
+        </tr>
+        <tr>
+          <td></td>
+          <td><b>0001</b></td>
+        </tr>
+      </table>
+    </p>
+
+    <p>
+      Only the first bit for both the <code class="language-csharp">card.Suits</code>
+      property and <code class="language-csharp">SuitsFlags.Spades</code>
+      <code class="language-csharp">enum</code> is <b>1</b>, so the result is
+      <b>0001</b>, which is the values of <code class="language-csharp">SuitsFlags.Spades</code>.
+    </p>
+
+    <p>
+      Notice that this only works because we set the values of the
+      <code class="language-csharp">SuitsFlags</code>
+      <code class="language-csharp">enum</code> to powers of 2 so that only one
+      bit will be <b>1</b>. To make this even clearer, we could have written the
+      <code class="language-csharp">enum</code> with the left-shift operator as:
+    </p>
+
+    <p>
+      <pre><code class="language-csharp">
+      [Flags]
+      public enum SuitsFlags {
+        Spades = 1 << 0,
+        Clubs = 1 << 1,
+        Diamonds = 1 << 2,
+        Hearts = 1 << 3
+      }
+      </code></pre>
+    </p>
+
+    <p>
+      And finally, this only works because the enumeration type allows you to set
+      the underlying value of a property to a value that is not in the enumeration list.
+      If you could not do this, then you would have to list every combination of flags
+      as a separate entry in the enum, which would be very tedious and error-prone. The
+      total number of permutations could be as high as the <b>sum of r = 1 => n of n!/(n-r)!</b>, where
+      n is the total number of entries in the enumerator list and r the number of entries
+      taken at a time. For an <code class="language-csharp">enum</code> of 4 entries, this would
+      be 64 permutations.
+    </p>
+
+    <p>
+      In an ideal world, these two functionalities of <code class="language-csharp">enum</code>s
+      —using the <code class="language-csharp">enum</code> to represent a single value
+      from a list and using <code class="language-csharp">enum</code>s as flags—would
+      be broken into two different types. One type could be an <code class="language-csharp">enum</code>
+      which would provide the former functionality and also strictly limit any property values
+      to those that are included in the enumeration list. The second type could be called a
+      bit flag or a bit array and would allow a property to be set to the result of
+      bitwise operations, i.e. values that are not in the list.
+    </p>
+
+  </body>
+</html>

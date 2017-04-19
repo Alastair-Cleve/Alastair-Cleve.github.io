@@ -33,3 +33,13 @@ thead th {
 td {
   padding: 5px;
 }
+
+/*For displaying binary*/
+.binary tr {
+  border: none;
+}
+
+.binary td {
+  padding: 0px 0px 0px 25px;
+  width: 150px;
+}
