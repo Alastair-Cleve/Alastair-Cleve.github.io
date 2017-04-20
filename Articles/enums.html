@@ -349,10 +349,10 @@
       the underlying value of a property to a value that is not in the enumeration list.
       If you could not do this, then you would have to list every combination of flags
       as a separate entry in the enum, which would be very tedious and error-prone. The
-      total number of permutations could be as high as the <b>sum of r = 1 => n of n!/(n-r)!</b>, where
-      n is the total number of entries in the enumerator list and r the number of entries
+      total number of combinations could be as high as the <b>sum of r = 1 => n of n!/(r!(n-r)!)</b>, where
+      <b>n</b> is the total number of entries in the enumerator list and <b>r</b> the number of entries
       taken at a time. For an <code class="language-csharp">enum</code> of 4 entries, this would
-      be 64 permutations.
+      be 15 combinations.
     </p>
 
     <p>
